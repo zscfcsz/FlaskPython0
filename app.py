@@ -36,14 +36,28 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # message = TextSendMessage(text=event.message.text)
-    message = TextSendMessage(text='Hi Hi')
+    if event.message.text == "哼!":
+        message = TextSendMessage(text="哼哼!")
+    elif event.message.text == "哎呀~":
+        message = TextSendMessage(text="哎呀呀~")
+    elif event.message.text == "嘿嘿~":
+        message = TextSendMessage(text="嘿嘿嘿~")
+    elif event.message.text == "謝謝~":
+        message = TextSendMessage(text="不謝~")
+    elif event.message.text == "厲害了!!":
+        message = TextSendMessage(text="真的太厲害了!!")
+    elif event.message.text == "氣哭":
+        message = TextSendMessage(text="氣哭!!")
+    else:
+        message = TextSendMessage(text=event.message.text)
+
     line_bot_api.reply_message(event.reply_token, message)
 
-# @app.route('/')
-# def hello():
-#     print(os.environ['channel_access_token'])
-#     print(os.environ['channel_secret'])
-#     return 'Hello World!';
+@app.route('/')
+def hello():
+    # print(os.environ['channel_access_token'])
+    # print(os.environ['channel_secret'])
+    return 'Hello World!';
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
