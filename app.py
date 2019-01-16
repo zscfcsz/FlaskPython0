@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, render_template
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -13,9 +13,18 @@ import os
 app = Flask(__name__)
 
 # Channel Access Token
-line_bot_api = LineBotApi(os.environ['channel_access_token'])
+# if os.environ['channel_access_token'] is None:
+if os.environ.get('channel_access_token') is None:
+    line_bot_api = LineBotApi('')
+else:
+    line_bot_api = LineBotApi(os.environ.get('channel_access_token'))
+
 # Channel Secret
-handler = WebhookHandler(os.environ['channel_secret'])
+# if os.environ['channel_secret'] is None:
+if os.environ.get('channel_secret') is None:
+    handler = WebhookHandler('')
+else:
+    handler = WebhookHandler(os.environ.get('channel_secret'))
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -55,9 +64,10 @@ def handle_message(event):
 
 @app.route('/')
 def hello():
-    # print(os.environ['channel_access_token'])
-    # print(os.environ['channel_secret'])
-    return 'Hello World!';
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        return str(e)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
