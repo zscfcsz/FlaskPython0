@@ -5,7 +5,49 @@
     <title>Test</title>
 </head>
 
+<script>
+    window.addEventListener("DOMContentLoaded", function() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var pic = document.getElementById('pic');
+
+        document.getElementById('drawPic').addEventListener('click', function() {
+            var file = pic.files[0];
+            fr = new FileReader();
+            fr.onload = function(){
+                img = new Image();
+                img.onload = function(){
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    canvas.width = parseFloat(document.getElementById('sw').value);
+                    canvas.height = parseFloat(document.getElementById('sh').value);
+                    <!--context.drawImage(img, parseFloat(document.getElementById('sx').value), parseFloat(document.getElementById('sy').value), parseFloat(document.getElementById('sw').value), parseFloat(document.getElementById('sh').value), parseFloat(document.getElementById('dx').value), parseFloat(document.getElementById('dy').value), parseFloat(document.getElementById('dw').value), parseFloat(document.getElementById('dh').value));-->
+                    <!--context.drawImage(img, canvas.width/3, canvas.height/3, canvas.width/3, canvas.height/3, 0, 0, canvas.width/3, canvas.height/3);-->
+                    context.drawImage(img, parseFloat(document.getElementById('sx').value), parseFloat(document.getElementById('sy').value), parseFloat(document.getElementById('sw').value), parseFloat(document.getElementById('sh').value), 0, 0, parseFloat(document.getElementById('sw').value), parseFloat(document.getElementById('sh').value));
+                }
+                img.src =  fr.result;
+            }
+            fr.readAsDataURL(file);
+        });
+
+        <!--document.getElementById('drawPic').addEventListener('click', function() {-->
+            <!--context.drawImage(file.files[0], 0, 0, 640, 480);-->
+        <!--});-->
+    });
+</script>
+
 <body>
-    <input type="file" accept="image/*" capture="camera" >
+    <!--<input type="file" accept="image/*" capture="camera" >-->
+    <input id="pic" type="file" accept="image/*" >
+    <button id="drawPic">drawPic</button>
+    <canvas id="canvas"></canvas>
+    <hr>
+    <input id="sx" type="text" value = "0">
+    <input id="sy" type="text" value = "0">
+    <input id="sw" type="text" value = "300">
+    <input id="sh" type="text" value = "150">
+    <!--<input id="dx" type="text" value = "0">-->
+    <!--<input id="dy" type="text" value = "0">-->
+    <!--<input id="dw" type="text" value = "300">-->
+    <!--<input id="dh" type="text" value = "150">-->
 </body>
 </html>
