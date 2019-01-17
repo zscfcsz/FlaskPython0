@@ -6,6 +6,7 @@
 </head>
 
 <script>
+    var testFile;
     window.addEventListener("DOMContentLoaded", function() {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
@@ -34,6 +35,14 @@
 
         document.getElementById('file').addEventListener('change', function(e) {
             file = e.target.files[0];
+            var image = new Image();
+            image.src = URL.createObjectURL(file);
+            image.onload = function(){
+                console.log(image.width);
+                console.log(image.height);
+                document.getElementById('sw').value = image.width;
+                document.getElementById('sh').value = image.height;
+            }
 
             <!--轉 imag 方法1:-->
             <!--frame.src = URL.createObjectURL(e.target.files[0]);-->
@@ -57,8 +66,8 @@
     <hr>
     <input id="sx" type="text" value = "0">
     <input id="sy" type="text" value = "0">
-    <input id="sw" type="text" value = "300">
-    <input id="sh" type="text" value = "150">
+    <input id="sw" type="text">
+    <input id="sh" type="text">
     <!--<input id="dx" type="text" value = "0">-->
     <!--<input id="dy" type="text" value = "0">-->
     <!--<input id="dw" type="text" value = "300">-->
