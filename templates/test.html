@@ -9,13 +9,18 @@
     window.addEventListener("DOMContentLoaded", function() {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
-        var pic = document.getElementById('pic');
+        var file;
 
         document.getElementById('drawPic').addEventListener('click', function() {
-            var file = pic.files[0];
+            if(file == undefined){
+                return;
+            }
+
             fr = new FileReader();
+            fr.readAsDataURL(file);
             fr.onload = function(){
                 img = new Image();
+                img.src =  fr.result;
                 img.onload = function(){
                     context.clearRect(0, 0, canvas.width, canvas.height);
                     canvas.width = parseFloat(document.getElementById('sw').value);
@@ -24,20 +29,29 @@
                     <!--context.drawImage(img, canvas.width/3, canvas.height/3, canvas.width/3, canvas.height/3, 0, 0, canvas.width/3, canvas.height/3);-->
                     context.drawImage(img, parseFloat(document.getElementById('sx').value), parseFloat(document.getElementById('sy').value), parseFloat(document.getElementById('sw').value), parseFloat(document.getElementById('sh').value), 0, 0, parseFloat(document.getElementById('sw').value), parseFloat(document.getElementById('sh').value));
                 }
-                img.src =  fr.result;
             }
-            fr.readAsDataURL(file);
         });
 
-        <!--document.getElementById('drawPic').addEventListener('click', function() {-->
-            <!--context.drawImage(file.files[0], 0, 0, 640, 480);-->
-        <!--});-->
+        document.getElementById('file').addEventListener('change', function(e) {
+            file = e.target.files[0];
+
+            <!--轉 imag 方法1:-->
+            <!--frame.src = URL.createObjectURL(e.target.files[0]);-->
+
+            <!--轉 imag 方法2:-->
+            <!--tmpFile = new FileReader();-->
+            <!--tmpFile.readAsDataURL(e.target.files[0]);-->
+            <!--tmpFile.onload = function () {-->
+                <!--frame.src = this.result-->
+            <!--}-->
+        });
     });
 </script>
 
 <body>
-    <input type="file" accept="image/*" capture="camera" >
-    <!--<input id="pic" type="file" accept="image/*" >-->
+    <input id="file" type="file" accept="image/*" capture="camera" >
+    <img id="frame">
+    <hr>
     <button id="drawPic">drawPic</button>
     <canvas id="canvas"></canvas>
     <hr>
